@@ -38,14 +38,14 @@ import org.slf4j.LoggerFactory;
 public class Listener extends ListenerAdapter
 {
     private final Bot bot;
-    
+
     public Listener(Bot bot)
     {
         this.bot = bot;
     }
-    
+
     @Override
-    public void onReady(ReadyEvent event) 
+    public void onReady(ReadyEvent event)
     {
         if(event.getJDA().getGuildCache().isEmpty())
         {
@@ -54,7 +54,7 @@ public class Listener extends ListenerAdapter
             log.warn(event.getJDA().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
         }
         credit(event.getJDA());
-        event.getJDA().getGuilds().forEach((guild) -> 
+        event.getJDA().getGuilds().forEach((guild) ->
         {
             try
             {
@@ -67,28 +67,10 @@ public class Listener extends ListenerAdapter
             }
             catch(Exception ignore) {}
         });
-        if(bot.getConfig().useUpdateAlerts())
-        {
-            bot.getThreadpool().scheduleWithFixedDelay(() -> 
-            {
-                try
-                {
-                    User owner = bot.getJDA().retrieveUserById(bot.getConfig().getOwnerId()).complete();
-                    String currentVersion = OtherUtil.getCurrentVersion();
-                    String latestVersion = OtherUtil.getLatestVersion();
-                    if(latestVersion!=null && !currentVersion.equalsIgnoreCase(latestVersion))
-                    {
-                        String msg = String.format(OtherUtil.NEW_VERSION_AVAILABLE, currentVersion, latestVersion);
-                        owner.openPrivateChannel().queue(pc -> pc.sendMessage(msg).queue());
-                    }
-                }
-                catch(Exception ex) {} // ignored
-            }, 0, 24, TimeUnit.HOURS);
-        }
     }
-    
+
     @Override
-    public void onGuildMessageDelete(GuildMessageDeleteEvent event) 
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event)
     {
         bot.getNowplayingHandler().onMessageDelete(event.getGuild(), event.getMessageIdLong());
     }
@@ -100,17 +82,17 @@ public class Listener extends ListenerAdapter
     }
 
     @Override
-    public void onShutdown(ShutdownEvent event) 
+    public void onShutdown(ShutdownEvent event)
     {
         bot.shutdown();
     }
 
     @Override
-    public void onGuildJoin(GuildJoinEvent event) 
+    public void onGuildJoin(GuildJoinEvent event)
     {
         credit(event.getJDA());
     }
-    
+
     // make sure people aren't adding clones to dbots
     private void credit(JDA jda)
     {

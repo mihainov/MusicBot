@@ -48,7 +48,7 @@ public class JMusicBot
                                 Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_MANAGE, Permission.MESSAGE_EXT_EMOJI,
                                 Permission.MANAGE_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK, Permission.NICKNAME_CHANGE};
     public final static GatewayIntent[] INTENTS = {GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_VOICE_STATES};
-    
+
     /**
      * @param args the command line arguments
      */
@@ -64,30 +64,30 @@ public class JMusicBot
             }
         startBot();
     }
-    
+
     private static void startBot()
     {
         // create prompt to handle startup
         Prompt prompt = new Prompt("JMusicBot");
         
-        // startup checks
-        OtherUtil.checkVersion(prompt);
+        // get and check latest version
+        String version = OtherUtil.getCurrentVersion();
         OtherUtil.checkJavaVersion(prompt);
-        
+
         // load config
         BotConfig config = new BotConfig(prompt);
         config.load();
         if(!config.isValid())
             return;
         LOG.info("Loaded config from " + config.getConfigLocation());
-        
+
         // set up the listener
         EventWaiter waiter = new EventWaiter();
         SettingsManager settings = new SettingsManager();
         Bot bot = new Bot(waiter, config, settings);
         
         AboutCommand aboutCommand = new AboutCommand(Color.BLUE.brighter(),
-                                "a music bot that is [easy to host yourself!](https://github.com/jagrosh/MusicBot) (v" + OtherUtil.getCurrentVersion() + ")",
+                                "a music bot that is [easy to host yourself!](https://github.com/jagrosh/MusicBot) (v"+version+")",
                                 new String[]{"High-quality music playback", "FairQueue™ Technology", "Easy to host yourself"},
                                 RECOMMENDED_PERMS);
         aboutCommand.setIsAuthor(false);
@@ -172,7 +172,7 @@ public class JMusicBot
                         + "window, please run in nogui mode using the -Dnogui=true flag.");
             }
         }
-        
+
         // attempt to log in and start
         try
         {
