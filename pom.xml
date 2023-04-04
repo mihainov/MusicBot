@@ -57,7 +57,7 @@
 	<dependency>
 	    <groupId>com.github.jagrosh</groupId>
 	    <artifactId>JLyrics</artifactId>
-	    <version>-0f9ac5df83-1</version>
+	    <version>01cf4ee0074e861d6f1d1062dc34fd9fa30c7f55</version>
 	</dependency>
 
         <!-- Misc Internal Dependencies -->
